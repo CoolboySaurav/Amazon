@@ -7,40 +7,25 @@ class Solution(object):
         :type s: str
         :rtype: str
         """
-        # Step 1: Count frequency of each character
-        counter = collections.Counter(s)
-        heap = []
+        maxHeap = [[- cnt, c] for c, cnt in Counter(s).items()]
+        heapq.heapify(maxHeap)
         
-        # Step 2: Push characters into a max-heap based on their frequency
-        for c, v in counter.items():
-            heapq.heappush(heap, (-v, c))  # Using negative for max-heap behavior
+        prev = None
+        res = ""
         
-        st = []
-        
-        # Step 3: Reorganize the string
-        while len(heap) > 1:
-            f1, a = heapq.heappop(heap)  # Most frequent character
-            f2, b = heapq.heappop(heap)  # Second most frequent character
+        while maxHeap or prev:
+            if prev and not maxHeap:
+                return ""
             
-            # Add these characters to the result
-            st.append(a)
-            st.append(b)
+            cnt, char = heapq.heappop(maxHeap)
+            res += char
+            cnt += 1
             
-            # Decrement the frequencies
-            f1 += 1
-            f2 += 1  # Incrementing because we use negative frequencies
+            if prev:
+                heapq.heappush(maxHeap, prev)
+                prev = None
             
-            # If there's still remaining frequency for a character, push it back
-            if f1 < 0:
-                heapq.heappush(heap, (f1, a))
-            if f2 < 0:
-                heapq.heappush(heap, (f2, b))
+            if cnt != 0:
+                prev = [cnt, char]
         
-        # Step 4: Handle the last character, if any
-        if heap:
-            f, last_char = heapq.heappop(heap)
-            if -f > 1:
-                return ""  # Impossible to reorganize
-            st.append(last_char)
-        
-        return "".join(st)
+        return res
