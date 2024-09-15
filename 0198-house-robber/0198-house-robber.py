@@ -4,7 +4,20 @@ class Solution(object):
         :type nums: List[int]
         :rtype: int
         """
+        
         n = len(nums)
+        nxt = nxt2 = 0
+        
+        for i in range(n - 1, -1, -1):
+            rob = dntrob = 0
+            rob = nums[i] + nxt2
+            dntrob = nxt
+            cur = max(rob, dntrob)
+            nxt2, nxt = nxt, cur
+        return nxt
+        
+        
+        
         dp = [0] * (n + 2)
         
         for ind in range(n - 1, -1, -1):
@@ -16,8 +29,6 @@ class Solution(object):
         
         return dp[0]
 
-        
-        
         
         dp = [-1] * (n)
         def helper(ind):
