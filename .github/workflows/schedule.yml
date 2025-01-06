@@ -1,35 +1,42 @@
 name: Daily Update Number
 
-# Controls when the workflow will run
 on:
   schedule:
-    # Runs at 3:00 PM UTC every day (adjust for your desired timezone)
-    - cron: '6 10 * * *'
+    # Runs at 10:06 AM UTC every day
+    - cron: '11 10 * * *'
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   update-number:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checkout the repository to the runner
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    # Set up Python for the script execution
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
-    # Install dependencies if needed
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      # Install dependencies if needed
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    # Run the update_number.py script
-    - name: Run update_number.py
-      run: python update_number.py
+      # Execute the update_number.py script
+      - name: Run update_number.py
+        run: python update_number.py
+
+      # Push changes back to the repository
+      - name: Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add number.txt
+          git commit -m "Updated number from GitHub Actions"
+          git push
