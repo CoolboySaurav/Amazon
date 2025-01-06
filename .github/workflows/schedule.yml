@@ -1,12 +1,24 @@
 name: Daily Update Number
 
 on:
-  schedule:
-    # Runs at 10:06 AM UTC every day
-    - cron: '11 10 * * *'
-
+  # schedule:
+  #   # Runs at 10:06 AM UTC every day
+  #   - cron: '11 10 * * *'
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Your name"
+        required: false
+        default: "World"
+      time:
+        description: "Execution time"
+        required: false
+        default: "10:12"
+        
 jobs:
   update-number:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
 
     steps:
