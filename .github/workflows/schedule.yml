@@ -4,7 +4,7 @@ name: Daily Update Number
 on:
   schedule:
     # Runs at 3:00 PM UTC every day (adjust for your desired timezone)
-    - cron: '0 15 * * *'
+    - cron: '6 10 * * *'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
