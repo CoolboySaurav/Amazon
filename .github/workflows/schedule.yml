@@ -22,33 +22,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Set up Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      # Install dependencies if needed
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # Execute the update_number.py script
       - name: Run update_number.py
         run: python update_number.py
 
-      # Push changes back to the repository
+      - name: Set up Git user
+        run: |
+          git config --global user.email "sauravm@arizona.edu"
+          git config --global user.name "Coolboy_saurav"
+
       - name: Push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config --global user.name "Coolboy_saurav"
-          git config --global user.email "sauravm@arizona.edu"
           git add number.txt
           git commit -m "Updated number from GitHub Actions"
           git push
