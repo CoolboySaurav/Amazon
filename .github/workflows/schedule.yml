@@ -2,7 +2,7 @@ name: Daily Update Number
 
 on:
   schedule:
-    - cron: '11 10 * * *'
+    - cron: '34 15 * * *'
   workflow_dispatch:
 
 jobs:
