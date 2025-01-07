@@ -2,18 +2,8 @@ name: Daily Update Number
 
 on:
   schedule:
-    # Runs at 10:06 AM UTC every day
     - cron: '11 10 * * *'
   workflow_dispatch:
-    inputs:
-      name:
-        description: "Your name"
-        required: false
-        default: "World"
-      time:
-        description: "Execution time"
-        required: false
-        default: "10:12"
 
 jobs:
   update-number:
@@ -43,11 +33,17 @@ jobs:
       - name: Run update_number.py
         run: python update_number.py
 
+      - name: Debug repository status
+        run: |
+          echo "Contents of number.txt:"
+          cat number.txt
+          echo "Git status:"
+          git status
+
       - name: Push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git add number.txt
-          git commit -m "Updated number from GitHub Actions" --allow-empty
+          git commit -m "Updated number from GitHub Actions" || echo "Nothing to commit"
           git push
-
