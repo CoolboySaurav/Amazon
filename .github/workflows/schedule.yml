@@ -1,9 +1,9 @@
 name: Daily Update Number
 
 on:
-  # schedule:
-  #   # Runs at 10:06 AM UTC every day
-  #   - cron: '11 10 * * *'
+  schedule:
+    # Runs at 10:06 AM UTC every day
+    - cron: '11 10 * * *'
   workflow_dispatch:
     inputs:
       name:
@@ -25,6 +25,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set up Git user
+        run: |
+          git config --global user.email "sauravm@arizona.edu"
+          git config --global user.name "Coolboy_saurav"
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -37,11 +42,6 @@ jobs:
 
       - name: Run update_number.py
         run: python update_number.py
-
-      - name: Set up Git user
-        run: |
-          git config --global user.email "sauravm@arizona.edu"
-          git config --global user.name "Coolboy_saurav"
 
       - name: Push changes
         env:
